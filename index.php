@@ -52,22 +52,23 @@ foreach ($example_persons_array as $key) {
     $sum++; 
     $surname = getSurname ($stringFIO);
     $name = getName($stringFIO);
-    $patronomyc = getPatronomyc ($stringFIO);
+    $patronymic = getPatronymic ($stringFIO);
 
-    getFullnameFromParts ($surname, $name, $patronomyc);
+    getFullnameFromParts ($surname, $name, $patronymic);
     getPartsFromFullname ($stringFIO);
     print_r(getPartsFromFullname ($stringFIO)); // Array ( [surname] => Иванов [name] => Иван [patronomyc] => Иванович )
     getShortName ($stringFIO);
     getGenderFromName ($stringFIO);
 }
 
-function getFullnameFromParts ($surname, $name, $partonomyc) {
-    $fullName = $surname . ' ' . $name . ' ' . $partonomyc;
-    echo  var_dump($fullName); //string(38) "Иванов Иван Иванович"
+function getFullnameFromParts ($surname, $name, $patronymic) {
+    $fullName = $surname . ' ' . $name . ' ' . $patronymic;
+    echo $fullName; //string(38) "Иванов Иван Иванович" *требуется вернуть строку, у вас вардамп
+    return $fullName;
  }
 
 function getPartsFromFullname ($stringFIO) {
-    $arrKeyFIO = ['surname', 'name', 'partonomyc'];
+    $arrKeyFIO = ['surname', 'name', 'patronymic'];
     $stringPartsName = explode(' ', $stringFIO);
     $arrFIO = (array_combine( $arrKeyFIO, $stringPartsName));
     return $arrFIO;
@@ -79,7 +80,8 @@ function getShortName ($stringFIO) {
     $name1 =  $arrStringFIO ['name'];
     $shorSurname = mb_substr($surname1, 0, 1);
     $shortName = $name1 . ' ' . $shorSurname . '.';
-    echo $shortName; //Иван И.
+    echo $shortName; //Иван И. *требуется вернуть строку, у вас производится вывод на печать
+    return $shortName;
     }
 
 function getSurname ($stringFIO) {
@@ -94,10 +96,10 @@ function getName($stringFIO) {
     return $name;
 }
 
-function getPatronomyc ($stringFIO) {
+function getPatronymic ($stringFIO) {
     $stringPartsName = explode(' ', $stringFIO);
-    $partonomyc = $stringPartsName[2];
-    return $partonomyc;
+    $patronymic = $stringPartsName[2];
+    return $patronymic;
 }
 
 function getGenderFromName ($stringFIO) {
@@ -105,12 +107,12 @@ function getGenderFromName ($stringFIO) {
     $gensum = 0;
     $surname1 =  $arrStringFIO['surname'];
     $name1 =  $arrStringFIO ['name'];
-    $patronomyc1 =  $arrStringFIO ['partonomyc'];
-    if (mb_substr($panronomyc1, -3) == 'вна' 
+    $patronymic1 =  $arrStringFIO ['patronymic']; // *переменна называеися patronomic1, в условияхиспользуется panronomyc1
+    if (mb_substr($patronymic1, -3) == 'вна' 
     || mb_substr($name1, -1) == 'а' 
     || mb_substr($surname1, -2) =='ва') {
         $gensum --;
-    } elseif (mb_substr($panronomyc1, -2) == 'ич'  
+    } elseif (mb_substr($patronymic1, -2) == 'ич'  
     || mb_substr($name1, -1) == 'й' 
     || mb_substr($name1, -1) == 'н' 
     || mb_substr($surname1, -1) == 'в') {
@@ -125,7 +127,9 @@ function getGenderFromName ($stringFIO) {
     } else {
         $gensum = 'неопределенный пол';
     }
-    echo $gensum;
-    return $getsum;
+    echo $gensum;//мужской пол...
+    return $gensum; //*сумма признаков записвается в $gensum, функция возвращает $getsum
 }
+
+
 ?>
